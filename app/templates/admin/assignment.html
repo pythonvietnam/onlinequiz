@@ -1,0 +1,126 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'search' and request.args.get('id', '') == '' %}
+    <form method="POST" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label>Tên tài khoản</label>
+                <input type="text" name="username">
+                <label>Để trống nếu muốn tìm tất cả</label>
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Kì thi</label>
+                <select name="exam" required>
+                    <option value="Tất cả">Tất cả</option>
+                    {% for exam in exams %}
+                        <option value="{{ exam['link'] }}">{{ exam['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Nhóm</label>
+                <select name="group" required>
+                    <option value="Tất cả">Tất cả</option>
+                    {% for group in groups %}
+                        <option value="{{ group['_id'] }}">{{ group['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="search" value="Tìm" class="pure-button button-etick" autofocus>
+            </div>
+        </fieldset>
+    </form>
+    </br>
+    {% if res %}
+        <b>Kết quả:</b></br></br>
+        {% for i in res %}
+            {{ loop.index }}.&nbsp;
+            <a href="{{ request.path }}?c=search&id={{ i['_id'] }}">
+                {{ lookup(i['username'], i['exam_link']) }}
+            </a>
+            {% if check_mode_is_test(i['exam_link']) %}
+                <a href="{{ request.path }}?c=search&delete={{ i['_id'] }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                    <img src="/static/pic/delete-icon.png" width=20 height=20>
+                </a>
+            {% endif %}</br>
+        {% endfor %}
+    {% elif res == None %}
+        Không có kết quả nào!
+    {% endif %}
+{% elif request.args.get('c', '') == 'search' and request.args.get('id', '') != '' %}
+    <table class="pure-table pure-table-bordered">
+        <tr>
+            <td><h3>Số báo danh</h3></td>
+            <td>{{ user['username'] }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Thí sinh</h3></td>
+            <td>{{ user['fullname'] }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Kì thi</h3></td>
+            <td>{{ examname }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Điểm</h3></td>
+            <td>{{ assignment['point'] }}/100</td>
+        </tr>
+
+        <tr>
+            <td><h3>Thời gian hoàn thành bài thi</h3></td>
+            <td>{{ seconds_to_time(assignment['completed_time']) }}</td>
+        </tr>
+                
+        <tr>
+            <td><h3>Ngày làm bài</h3></td>
+            <td>{{ (assignment['create_date']|string)[:19] }}</td>
+        </tr>
+    </table>
+    </br>
+    </br>
+    <h1>BÀI LÀM</h1>
+    </br>
+    </br>
+    
+        {% for i in range(assignment['asm_of_user']|count()) %}
+            <div class="question" {% if assignment['asm_of_user'][i] == assignment['asm_correct'][i] %}
+                                        style="border-left: 4px solid green; border-radius: 2px; margin-left: 0px;"
+                                  {% elif check_ticked(assignment['asm_of_user'][i][1]) and assignment['asm_of_user'][i] != assignment['asm_correct'][i] %}
+                                        style="border-left: 4px solid red; border-radius: 2px; margin-left: 0px;"
+                                  {% endif %}>
+                <b style="font-size: 14px; color: #1e47b0">CÂU {{ loop.index }}. {{ assignment['asm_of_user'][i][0]|upper }}</b>
+                <div style="padding: 20px 20px 0px 20px; font-size: 14px;">
+                    {% for j in range(assignment['asm_of_user'][i][1]|count()) %}
+                        <input type="{{ assignment['asm_of_user'][i][2] }}" 
+                               {% if assignment['asm_of_user'][i][1][j][1] %}
+                                    checked
+                               {% endif %}
+                               disabled
+                        >
+                        <span {% if assignment['asm_correct'][i][1][j][1] %}style="color: green; font-weight: bold"{% endif %}>
+                            {{ assignment['asm_of_user'][i][1][j][0] }}
+                        </span>
+                        </br>
+                        </br>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}    
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

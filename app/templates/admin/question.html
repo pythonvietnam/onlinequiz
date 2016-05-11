@@ -1,0 +1,186 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'create' %}
+    <form method="POST" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="name">Gói câu hỏi</label>
+                <select name="quespackage">
+                        <option></option>
+                        {% for quespackage in quespackages %}
+                            <option value="{{ quespackage['code'] }}">{{ quespackage['name'] }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Nội dung câu hỏi</label>
+                <textarea type="text" name="question_content" rows=5 cols=40></textarea>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Số câu trả lời</label>
+                <select name="number_answer">
+                    <option value="2" {% if number_answer == 2 %}selected{% endif %}>2</option>
+                    <option value="3" {% if number_answer == 3 %}selected{% endif %}>3</option>
+                    <option value="4" {% if number_answer == 4 %}selected{% endif %}>4</option>
+                    <option value="5" {% if number_answer == 5 %}selected{% endif %}>5</option>
+                    <option value="6" {% if number_answer == 6 %}selected{% endif %}>6</option>
+                    <option value="7" {% if number_answer == 7 %}selected{% endif %}>7</option>
+                    <option value="8" {% if number_answer == 8 %}selected{% endif %}>8</option>
+                    <option value="9" {% if number_answer == 9 %}selected{% endif %}>9</option>
+                    <option value="10" {% if number_answer == 10 %}selected{% endif %}>10</option>
+                </select>
+                <input type="submit" name="ques" value="Change" class="pure-button button-success">
+            </div>
+            
+            {% for i in range(1, number_answer + 1) %}
+                <div class="pure-control-group">
+                    <label for="name">Đáp án {{ i }}</label>
+                    <textarea type="text" name="answer_content{{ i }}" rows=2 cols=40></textarea>
+                    <select name="answer_value{{ i }}">
+                        <option></option>
+                        <option value="Đúng">Đúng</option>
+                        <option value="Sai">Sai</option>
+                    </select>
+                </div>
+            {% endfor %}
+            
+            <div class="pure-control-group">
+                <label for="name">Trộn</label>
+                <select name="shuffle">
+                    <option value="Không" selected>Không</option>
+                    <option value="Có">Có</option>
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="ques" value="Create" class="pure-button button-etick" autofocus>
+                <input type="reset" value="Reset" class="pure-button button-warning">
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('c', '') == 'view' and request.args.get('edit', '') == '' %}
+    <b>Chú ý:</b> Xóa Gói câu hỏi sẽ xóa tất cả các câu hỏi trong gói đó.</br></br>
+    {{ show|safe }}
+    </br></br></br>
+    <form method="POST"  class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="name">Tạo gói câu hỏi mới</label>
+                <input id="name" type="text" name="name" required>
+                <input type="submit" name="create" value="Create" class="pure-button button-etick" autofocus>
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('edit', '') != '' %}
+    {{ show|safe }}
+    </br>
+    DANH SÁCH CÂU HỎI ({{ ques_num }})
+    </br></br>
+    <table class="pure-table pure-table-bordered">
+        <tr>
+            <td><b>TT</b></td>
+            <td><b>Nội dung</b></td>
+            <td><b>Trộn</b></td>
+            <td></td>
+        </tr>
+        
+
+    {% for question in questions %}
+        <tr>
+            <td>
+                {{ loop.index }}
+            </td>
+            
+            <td>
+                {{ question['question_content'] }}
+                </br>
+                <div style="padding-left: 20px">
+                    {% for answer in question['answer_content'] %}
+                        {% if answer[1] == True %}
+                            <b style="color: green">
+                        {% endif %}
+                        {{ loop.index }}. {{ answer[0] }}
+                        </b>
+                        </br>
+                    {% endfor %}
+                </div>
+            </td>
+            
+            <td>
+                {% if question['shuffle'] == True %}
+                    Có
+                {% else %}
+                    Không
+                {% endif %}
+            </td>
+            
+            <td>
+                <form method='POST'>
+                    <a href="{{ request.path }}?c=question&id={{ question['_id'] }}"><img border="0" src="/static/pic/edit-icon.png" width="22" height="22"></a>
+                    <input type='image' alt='submit' name='delete' value="{{ question['_id'] }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?');" src="/static/pic/delete-icon.png" width="22" height="22">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% elif request.args.get('c', '') == 'question' and 'id' in request.args %}
+    <a href="{{ request.path }}?c=view&edit={{ question['quespackage'] }}"><- <b>Go back</b></a>
+    </br>
+    </br>
+
+    <form method="POST" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="name">Gói câu hỏi</label>
+                <select name="quespackage">
+                        {% for quespackage in quespackages %}
+                            <option value="{{ quespackage['code'] }}" {% if question['quespackage'] == quespackage['code'] %}selected{% endif %}>{{ quespackage['name'] }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Nội dung câu hỏi</label>
+                <textarea type="text" name="question_content" rows=5 cols=40>{{ question['question_content'] }}</textarea>
+            </div>
+            
+            <input type=hidden name="number_answer" value="{{ question['answer_content']|length }}">
+            {% for answer in question['answer_content'] %}
+                <div class="pure-control-group">
+                    <label for="name">Đáp án {{ loop.index }}</label>
+                    <textarea type="text" name="answer_content{{ loop.index }}" rows=2 cols=40>{{ answer[0] }}</textarea>
+                    <select name="answer_value{{ loop.index }}">
+                        <option></option>
+                        <option value="Đúng" {% if answer[1] == True %}selected{% endif %}>Đúng</option>
+                        <option value="Sai" {% if answer[1] == False %}selected{% endif %}>Sai</option>
+                    </select>
+                </div>
+            {% endfor %}
+            
+            <div class="pure-control-group">
+                <label for="name">Trộn</label>
+                <select name="shuffle">
+                    <option value="Không" {% if question['shuffle'] == False %}selected{% endif %}>Không</option>
+                    <option value="Có" {% if question['shuffle'] == True %}selected{% endif %}>Có</option>
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="Save" value="Save" class="pure-button button-etick" autofocus>
+            </div>
+        </fieldset>
+    </form>
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

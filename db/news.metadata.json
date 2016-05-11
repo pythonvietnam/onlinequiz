@@ -1,0 +1,1 @@
+{ "options" : { "create" : "news" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "thanhnien.news", "name" : "_id_" } ] }

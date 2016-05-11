@@ -1,0 +1,1 @@
+{ "options" : { "create" : "quespackages" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "thanhnien.quespackages", "name" : "_id_" }, { "v" : 1, "key" : { "code" : "" }, "unique" : true, "ns" : "thanhnien.quespackages", "name" : "code" } ] }

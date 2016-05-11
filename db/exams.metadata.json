@@ -1,0 +1,1 @@
+{ "options" : { "create" : "exams" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "thanhnien.exams", "name" : "_id_" }, { "v" : 1, "key" : { "link" : "" }, "unique" : true, "ns" : "thanhnien.exams", "name" : "link" } ] }

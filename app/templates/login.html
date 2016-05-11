@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="main">
+    <div class="menu">
+        <div class="menu-text">
+            <img src="/static/pic/login.png">
+            ĐĂNG NHẬP
+        </div>
+    </div>
+
+    <div class="content_news">
+        {% if error %}
+            <p style="text-align: center; color: orange;">{{ error }}</p></br>
+        {% endif %}
+        
+        <div class="login">
+            
+            <h2>ĐĂNG NHẬP</h2>
+
+            <form action="/dang-nhap" method="POST"  class="pure-form pure-form-aligned">
+                <fieldset>
+                    <div class="pure-control-group">
+                        <label>Tài khoản</label>
+                        <input type="text" name="username" placeholder="Username" required autofocus>
+                    </div>
+                    
+                    <div class="pure-control-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" placeholder="Password" required>	
+                    </div>
+                    
+                    <input type="HIDDEN" name="page" value="{{ page }}" >
+                    
+                    <div class="pure-control-group">
+                        <label></label>
+                        <input type="submit" value="Đăng nhập" class="pure-button button-etick">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

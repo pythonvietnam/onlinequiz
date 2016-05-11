@@ -1,0 +1,390 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background-color: #EFEFEF;
+    margin-top: 66px;
+    color: #333333;
+    font-size: 13px;
+    font-family: tahoma;
+}
+
+.container {
+}
+
+h1 {
+    font-size: 18px;
+    color: #1e47b0;
+}
+
+h2 {
+    color: #333333;
+    font-size: 17px;
+}
+
+h3 {
+    color: #1e47b0;
+    font-size: 13px;
+}
+
+a {
+    color: #333333;
+	text-decoration: none;
+}
+
+a:hover {
+    color: #6255cc;
+}
+
+li {
+    list-style: None;
+}
+
+.nothing {
+	clear:both;
+}
+
+/*-------------------- TOP --------------------*/
+
+#bg {
+    background-color: #1e47b0;
+    width:100%;
+    height:55px;
+    position:fixed;
+    top:0;
+}
+
+.top {
+    background: url('/static/pic/ubg.png') 0 0 repeat-x;
+    width:100%;
+    height:55px;
+    position:fixed;
+    top:0;
+    /* box-shadow: 0px 1px 1px #444444; */
+    border-bottom: 1px groove #375796;
+    color: yellow;
+}
+
+.top a:hover {
+    color: #333333;
+}
+
+.menubar {
+    width: 1000px;
+    margin: auto;
+}
+
+.logo {
+    margin-top:2px;
+    float:left;
+    width: 50px;
+    height: 50px
+}
+
+.slogan {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 250px;
+    float: left;
+    text-align: center;
+    color: yellow;
+    font-size: 100%;
+    font-family: 'Open Sans', tahoma;
+}
+
+.nav {
+    float: left;
+    margin-left: 20px;
+    font-family: 'Roboto Slab', tahoma;
+}
+    
+.nav li {
+    margin-top: 0px;
+    margin-left: 10px;
+    padding-top: 5px;
+    height: 50px;
+    width: 90px;
+    text-align: center;
+    font-size: bold;
+    float: left;
+    display: inline;
+}
+
+.nav img {
+    vertical-align: -10%;
+    margin-bottom: 4px;
+}
+
+.nav a {
+    color: yellow;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.nav :hover{
+    color: yellow;
+    background-color: #444444;
+}
+
+.logged_in {
+    float: right;
+    padding-top:17px;
+}
+
+.logged_in a {
+    color: white;
+}
+
+.logged_in a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/*-------------------- LINKBAR --------------------*/
+
+#linkbar {
+    width: 1000px;
+    margin: 0px auto 10px;
+    font-family: 'Roboto Slab', tahoma;
+}
+
+/*-------------------- BANNER --------------------*/
+
+/* #banner {
+	background-image:url('/static/pic/banner.jpg');
+    height: 200px;
+    width: 996px;
+    margin: 0px auto 20px;
+    border: 1px solid #d7d7d7;
+    border-radius: 2px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0% 0%;
+} */
+
+
+/*-------------------- MIDDLE --------------------*/
+
+#middle {
+    width: 1000px;
+    margin: 0px auto 20px;
+    text-align: justify;
+}
+
+.main {
+    border: 1px solid #D7D7D7;
+    border-radius: 3px;
+    background-color: white;
+}
+
+/*-------------------- MENU --------------------*/
+
+.menu {
+    height: 55px;
+    border-bottom: 1px solid #D7D7D7;
+    background-color: #EBEBEB;
+}
+
+.menu-text {
+    float: left;
+    margin: 15px 0px 0px 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.menu-text img {
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+}
+
+.menu-button {
+}
+
+.menu-button li {
+    margin: 0px;
+    padding-top: 20px;
+    float: right;
+    height: 35px;
+    border-left: 1px solid #D7D7D7;
+    color: white;
+}
+
+.menu-button a {
+    border-left: 4px solid #EBEBEB;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.active {
+    background-color: white;
+    border-bottom: 1px solid white;
+}
+
+.active a {
+    border-left: 4px solid #1e47b0;
+}
+
+/*-------------------- NEWS - GUIDE --------------------*/
+
+.content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.news {
+    border: 1px solid #D7D7D7;
+    border-radius: 8px;
+    font-size: 11px;
+    width: 300px;
+    height: 350px;
+    float: left;
+    margin-left: 22px;
+    margin-bottom: 20px;
+}
+
+.content_news {
+    padding: 20px 20px 40px 20px;
+}
+
+/*-------------------- PROFILE --------------------*/
+
+.content_profile {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: auto;
+    width: 400px;
+}
+
+/*-------------------- EXAM --------------------*/
+
+.slide {
+    float: left;
+}
+.slide a {
+    text-decoration: none;
+}
+
+.slide li {
+    border: 1px solid #D7D7D7;
+    height: 163px;
+    width: 435px;
+    margin: 20px 0px 20px 40px;
+}
+
+.slide li:hover{
+}
+
+/*-------------------- QUESTIONS --------------------*/
+
+.question {
+    border: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+    padding: 20px 20px 0px 20px;
+    margin-left: 3px;
+}
+
+.question input {
+    vertical-align: -15%
+}
+
+.nopbai {
+    background-color: #ffcc32;
+    position: fixed;
+    bottom: 62px;
+    left: 48%;
+    border: 0px solid #1e47b0;
+    border-radius: 8px;
+    width: 507px;
+}
+
+.nopbai_text {
+    float: left;
+    padding: 10px 10px 13px 10px;
+    
+}
+
+.nopbai_button {
+    float: right;
+    margin-top: 35px;
+    padding: 10px;
+    border-left: 2px solid white;
+    height: 30px;
+}
+
+/*-------------------- BOTTOM --------------------*/
+
+#bottom {
+}
+
+/*+++++ FOOTER +++++*/
+
+#footer {
+    border-top:1px solid #D7D7D7;
+    padding: 10px 0;
+    height: 20px;
+    width: 1000px;
+    margin: auto;
+    font-size: 13px;
+}
+
+#footer_left {
+	float: left;
+}
+
+#footer_right {
+	float: right;
+}
+
+/*-------------------- OTHERS --------------------*/
+
+/*+++++ LOGIN +++++*/
+.login {
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    width: 360px;
+    margin: auto;
+    padding: 20px 10px 10px 10px;
+}
+
+.login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/*+++++ BUTTON +++++*/
+
+.button-etick,
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+	color: white;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	font-family: arial;
+	font-size: 13px;
+}
+
+.button-success {
+	background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+	background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+	background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+	background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.button-etick {
+	background: rgb(55, 178, 201); /* this is my color */
+}

@@ -1,0 +1,87 @@
+{% extends "template.html" %}
+{% block content %}
+
+{% if request.args.get('id', '') != '' and news != None %}
+    <div class="main" style="width: 700px;float: left;">
+        <div class="menu">
+            <div class="menu-text">
+                <img src="/static/pic/news.png">
+                TIN TỨC
+            </div>
+        </div>
+
+        <div class="content_news">
+            <h1 style="font-size: 18px;color: #1e47b0;">{{ news['name']|upper }}</h1>
+            {% set a = news['create_date']|string() %}
+            <i style="font-size: 11px;color: #b7bdcf;">(Đăng ngày: {{ a[:10] }})</i>
+            </br>
+            </br>
+            <b>{{ news['summary'] }}</b>
+            </br>
+            </br>
+            {{ news['content']|safe }}
+        </div>
+    </div>
+        
+    <div class="main" style="width: 270px;float: right; border-bottom: 0px;">
+        <div class="menu">
+            <div class="menu-text">
+                <img src="/static/pic/more.png">
+                XEM THÊM
+            </div>
+        </div>
+
+        <div>
+            {% for other_new in other_news %}
+                <div style="width: 230px; border-bottom: 1px solid #d7d7d7; padding: 20px">
+                    <a href="{{ request.path }}?id={{ other_new['_id'] }}">
+                        {{ other_new['name']|upper }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="main">
+        <div class="menu">
+            <div class="menu-text">
+                <img src="/static/pic/news.png">
+                HỆ THỐNG THI TRẮC NGHIỆM TRỰC TUYẾN
+            </div>
+            
+            <div class="menu-button">
+                <li {% if request.path == "/" %}class="active"{% endif %}>
+                    <a href="/">TIN TỨC</a>  
+                </li>
+            </div>
+        </div>
+
+        <div class="content">
+            {% for new in news %}
+                <div class="news">
+                    <a href="/tin-tuc?id={{ new['_id'] }}">
+                        <div style="background-image: url('/static/uploads/{{ new['image'] }}');    
+                                    width: 100%;
+                                    height: 180px;
+                                    background-size: cover;
+                                    background-repeat: no-repeat;
+                                    background-position: 0% 20%;
+                                    border-top-left-radius: 8px;
+                                    border-top-right-radius: 8px;">
+                        </div>
+                        <div style="padding: 10px">
+                            <b style="font-size: 13px;">{{ new['name'] }}</b>
+                            </br>
+                            </br>
+                            {{ new['summary']|safe }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            
+            <div class="nothing">
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

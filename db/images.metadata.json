@@ -1,0 +1,1 @@
+{ "options" : { "create" : "images" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "thanhnien.images", "name" : "_id_" } ] }

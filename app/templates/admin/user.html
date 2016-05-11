@@ -1,0 +1,154 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'create_one' %}
+    Phần (*) là bắt buộc.
+    </br></br>
+    <form action='./user?c=create_one' method="POST" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label>Tài khoản (*)</label>
+                <input type="text" name="username" placeholder="[a-z0-9]{3,}" pattern="[a-z0-9]{3,}" required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Mật khẩu (*)</label>
+                <input type="password" name="password" placeholder="Ít nhất 6 kí tự" pattern="[^]{6,}" required>	
+            </div>
+            
+            <div class="pure-control-group">
+                <label >Họ và tên</label>
+                <input type="text" name="fullname">
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Email</label>
+                <input type="text" name="email" placeholder="example@company.com">
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Đơn vị công tác</label>
+                <input type="text" name="work">
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Chức vụ</label>
+                <input type="text" name="regency">
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Nhóm (*)</label>
+                <select name="group" required>
+                    <option></option>
+                    {% for group in groups %}
+                        <option value="{{ group['_id'] }}">{{ group['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="create" value="Create" class="pure-button button-etick" autofocus>
+                <input type="reset" value="Reset" class="pure-button button-warning">
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('c', '') == 'create_multi' %}
+    Tên tài khoản được tạo sẽ gồm phần cố định và 4 chữ số ngẫu nhiên phía sau. Ví dụ: vnp2368
+    </br>
+    Mỗi lần tạo tối đa là 100 tài khoản, tối thiểu là 2.
+    </br>
+    Phần (*) là bắt buộc.
+    </br></br>
+    
+    <form action='./user?c=create_multi' method="POST"  class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label>Phần cố định (*)</label>
+                <input type="text" name="username" placeholder="[a-z0-9]{3,} ví dụ: vnp" pattern="[a-z0-9]{3,}" required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Số lượng (*)</label>
+                <input type="number" name="number" value="2" min=2 max=100 required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Mật khẩu mặc định</label>
+                <input type="password" name="password" placeholder="Ít nhất 6 ký tự/ Bỏ qua nếu tạo ngẫu nhiên" size=36>	
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Đơn vị công tác</label>
+                <input type="text" name="work">
+            </div>
+            
+            <div class="pure-control-group">
+                <label>Nhóm (*)</label>
+                <select name="group" required>
+                    <option></option>
+                    {% for group in groups %}
+                        <option value="{{ group['_id'] }}">{{ group['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="create" value="Create" class="pure-button button-etick" autofocus>
+                <input type="reset" value="Reset" class="pure-button button-warning">
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('c', '') == 'create_group' and 'edit' not in request.args %}
+    {{ show|safe }}
+    </br></br></br>
+    <form method="POST" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label>Tạo nhóm</label>
+                <input type="text" name="name" required>
+                <input type="submit" name="create" value="Create" class="pure-button button-etick" autofocus>
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('c', '') == 'create_group' and 'edit' in request.args %}
+    {{ show|safe }}
+{% elif request.args.get('c', '') == 'view' and request.args.get('edit', '') == '' %}
+    <form method="GET" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label>Nhóm</label>
+                <input type="hidden" name="c" value="view">
+                <select name="group">
+                    {% for group in groups %}
+                        <option value="{{ group['_id'] }}"
+                            {% if group['_id']|string() == request.args.get('group', '') %}
+                                selected
+                            {% endif %}>
+                                {{ group['name'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" value="Tìm" class="pure-button button-etick" autofocus>
+            </div>
+        </fieldset>
+    </form>
+    </br>
+    </br>
+    
+    <b>Chú ý:</b> Xóa Tài khoản sẽ xóa tất cả các bài thi của tài khoản đó.</br></br>
+    {{ show|safe }}
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

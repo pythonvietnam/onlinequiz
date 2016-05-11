@@ -1,0 +1,180 @@
+{% extends "template.html" %}
+{% block content %}
+{% if request.args.get('m','') != '' and assignment and not is_making(assignment['deadline']) %}
+    <div class="main">
+        <div class="menu">
+            <div class="menu-text">
+                <img src="/static/pic/exam-icon.png">
+                XEM LẠI - {{ session['fullname']|upper }} - ĐIỂM {{ assignment['point'] }}/100 - THỜI GIAN {{ seconds_to_time(assignment['completed_time'])|upper }}
+            </div>
+            
+            <div class="menu-button">
+                <li {% if request.args.get('m', '') == 'xemlai' %}class="active"{% endif %}>
+                    <a href="{{ request.path }}?m=xemlai">BÀI LÀM</a>
+                </li>
+                
+                <li {% if request.args.get('m', '') == 'ketqua' %}class="active"{% endif %}>
+                    <a href="{{ request.path }}?m=ketqua">ĐÁP ÁN</a>  
+                </li>
+            </div>
+        </div>
+        
+        <div style="padding: 20px 20px 0px 20px;">
+            {% if request.args.get('m', '') == 'xemlai' %}
+                {% for question in assignment['asm_of_user'] %}
+                    <div class="question" {% if check_ticked(question[1]) %}style="border-left: 4px solid #1e47b0; border-radius: 2px; margin-left: 0px;"{% endif %}>
+                        <b style="font-size: 14px; color: #1e47b0">CÂU {{ loop.index }}. {{ question[0]|upper }}</b>
+                        <div style="padding: 20px 20px 0px 20px; font-size: 14px;">
+                            {% for answer_content in question[1] %}
+                                <input type="{{ question[2] }}" 
+                                       {% if answer_content[1] %}
+                                            checked
+                                       {% endif %}
+                                        disabled
+                                >&nbsp;{{ answer_content[0] }}
+                                </br>
+                                </br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif request.args.get('m', '') == 'ketqua' %}
+                {% if result_on %}
+                    {% for i in range(assignment['asm_of_user']|count()) %}
+                        <div class="question" {% if assignment['asm_of_user'][i] == assignment['asm_correct'][i] %}
+                                                    style="border-left: 4px solid green; border-radius: 2px; margin-left: 0px;"
+                                              {% elif check_ticked(assignment['asm_of_user'][i][1]) and assignment['asm_of_user'][i] != assignment['asm_correct'][i] %}
+                                                    style="border-left: 4px solid red; border-radius: 2px; margin-left: 0px;"
+                                              {% endif %}>
+                            <b style="font-size: 14px; color: #1e47b0">CÂU {{ loop.index }}. {{ assignment['asm_of_user'][i][0]|upper }}</b>
+                            <div style="padding: 20px 20px 0px 20px; font-size: 14px;">
+                                {% for j in range(assignment['asm_of_user'][i][1]|count()) %}
+                                    <input type="{{ assignment['asm_of_user'][i][2] }}" 
+                                           {% if assignment['asm_of_user'][i][1][j][1] %}
+                                                checked
+                                           {% endif %}
+                                           disabled
+                                    >
+                                    <span {% if assignment['asm_correct'][i][1][j][1] %}style="color: green; font-weight: bold"{% endif %}>
+                                        {{ assignment['asm_of_user'][i][1][j][0] }}
+                                    </span>
+                                    </br>
+                                    </br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    Bạn chưa thể xem đáp án vào lúc này.</br></br>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="nothing">
+        </div>
+    </div>
+{% else %}
+    <div class="main">
+        <div class="menu">
+            <div class="menu-text">
+                <img src="/static/pic/exam.png">
+                THÔNG TIN KÌ THI - {{ exam['name']|upper }}
+            </div>
+        </div>
+
+        <div class="content">
+            <div style="width: 600px; margin: 0px auto 20px;">
+                <table width=600 class="pure-table pure-table-bordered">
+                    <tr>
+                        <td width="140px"><h3>Nội dung</h3></td>
+                        <td>{{ exam['content'] }}</td>
+                    </tr>
+                
+                    <tr>
+                        <td><h3>Số câu hỏi</h3></td>
+                        <td>{{ exam['question_number'] }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><h3>Thời gian làm bài</h3></td>
+                        <td>{{ exam['duration'] }} phút</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><h3>Ngày bắt đầu thi</h3></td>
+                        <td>{{ (exam['start_date'].replace(tzinfo=None)|string)[:10] }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><h3>Nộp bài trước ngày</h3></td>
+                        <td>{{ (exam['deadline'].replace(tzinfo=None)|string)[:10] }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><h3>Chế độ thi</h3></td>
+                        <td>
+                            {% if exam['mode'] == 'Thi thử' %}
+                                <span style="color: orange">{{ exam['mode'] }}</span>
+                                <img src="/static/pic/training.png" width=20 height=20 style="vertical-align:middle">
+                            {% else %}
+                                <span style="color: #35d332">{{ exam['mode'] }}</span>
+                                <img src="/static/pic/logo.png" width=20 height=23 style="vertical-align:middle">
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                {% if exam['start_date'].replace(tzinfo=None) > now %}
+                    Kì thi chưa bắt đầu, bạn không thể tham gia.
+                {% else %}
+                    {% if assignment %}
+                    <!-- Có bài làm -->
+                        {% if is_making(assignment['deadline']) %}
+                            <!-- Đang làm bài dở (vẫn còn time) -->
+                            Thời gian làm bài còn <b>{{ seconds_to_time((assignment['deadline'].replace(tzinfo=None) - now).total_seconds()) }}</b>
+                            </br>
+                            </br>
+                            <form method=POST>
+                                <input type=submit name=doexam value="Tiếp tục" class="button-secondary pure-button">
+                            </form>
+                        {% elif is_making(exam['deadline']) and not is_making(assignment['deadline']) %}
+                            <!-- Đã làm bài xong, thời hạn kì thi vẫn còn -->
+                            Bạn đã thi xong, số điểm của bạn là <b style="color: #008000">{{ assignment['point'] }}/100</b>
+                            <br />
+                            <br /> 
+                            <u>Xem lại bài thi</u>  <a href="{{ request.url }}?m=xemlai">
+                                                        <img src="/static/pic/exam-icon.png" width=40 height=40 style="vertical-align: middle">
+                                                    </a>
+
+                        {% elif not is_making(exam['deadline']) and not is_making(assignment['deadline']) %}
+                            <!-- Đã làm bài xong, thời hạn kì thi đã hết -->
+                            Kì thi đã kết thúc, số điểm của bạn là <b style="color: #008000">{{ assignment['point'] }}/100</b>
+                            <br />
+                            <br />
+                            <u>Xem lại bài thi</u>  <a href="{{ request.url }}?m=xemlai">
+                                                        <img src="/static/pic/exam-icon.png" width=40 height=40 style="vertical-align: middle">
+                                                    </a>
+                        {% endif %}
+                    {% else %}
+                    <!-- Không có bài làm -->
+                        {% if is_making(exam['deadline']) %}
+                            <!-- Chưa làm bài, thời hạn kì thi vẫn còn -->
+                            Bạn chưa tham gia. Thời gian sẽ được tính ngay sau khi bạn ấn bắt đầu.
+                            </br>
+                            </br>
+                            <form method=POST>
+                                <input type=submit name=doexam value="Bắt đầu" class="button-secondary pure-button">
+                            </form>
+                        {% else %}
+                            <!-- Chưa làm bài, thời hạn kì thi đã hết -->
+                            Kì thi đã kết thúc. Bạn không thể tham gia.
+                        {% endif %}  
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

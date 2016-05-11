@@ -1,0 +1,21 @@
+
+127.0.0.1 -- 2016-05-11 16:24:45.020885 -- Removed News: Hướng dẫn dự thi trắc nghiệm (Video)
+127.0.0.1 -- 2016-05-11 16:25:02.915578 -- Removed News: Tuyên dương 60 “Thanh niên tiên tiến làm theo lời Bác” Khối Doanh nghiệp Trung ương
+127.0.0.1 -- 2016-05-11 16:25:07.400743 -- Removed News: Chủ tịch nước gặp mặt đại biểu "Thanh niên tiên tiến làm theo lời Bác” Khối Doanh nghiệp Trung ương
+127.0.0.1 -- 2016-05-11 16:25:11.216380 -- Removed News: Đoàn Khối Doanh nghiệp Trung ương khởi động "Năm thanh niên tình nguyện 2014"
+127.0.0.1 -- 2016-05-11 16:48:23.448633 -- Edited News: Thể lệ cuộc thi tìm hiểu CN Mác TT Hồ Chí Minh trên mạng Internet --> Thi trắc nghiệm tại EPAY
+127.0.0.1 -- 2016-05-11 16:50:07.313758 -- Created Question Package: Phòng Hệ thống
+127.0.0.1 -- 2016-05-11 16:50:53.181137 -- Error Create Question: Bạn hãy cho biết Linux có phải là một HĐH? -- Bạn không được để trống đáp án Đúng/Sai
+127.0.0.1 -- 2016-05-11 16:51:57.243092 -- Error Create Question: Lênh select là lệnh gì? -- Bạn không được để trống đáp án Đúng/Sai
+127.0.0.1 -- 2016-05-11 16:52:22.531642 -- Created Question: Lênh select là lệnh gì?
+127.0.0.1 -- 2016-05-11 16:53:25.775822 -- Error Create Exam: Trắc nghiệm kỳ 2 - 2016 -- Số câu hỏi của kì thi nhiều hơn số câu hỏi trong gói câu hỏi bạn chọn
+127.0.0.1 -- 2016-05-11 16:53:36.310313 -- Created Exam: Trắc nghiệm kỳ 2 - 2016
+127.0.0.1 -- 2016-05-11 16:55:23.827108 -- Removed Exam: Chủ nghĩa Mác - Lê nin, tư tưởng Hồ Chí Minh và bài học lý luận chính trị -- {u'ok': 1, u'n': 0}
+127.0.0.1 -- 2016-05-11 16:55:27.188503 -- Removed Exam: Tập làm quen -- {u'ok': 1, u'n': 2}
+127.0.0.1 -- 2016-05-11 16:55:29.018581 -- Removed Exam: EPAY1 -- {u'ok': 1, u'n': 1}
+127.0.0.1 -- 2016-05-11 16:55:30.886552 -- Removed Exam: EPAY1 -- {u'ok': 1, u'n': 1}
+127.0.0.1 -- 2016-05-11 16:55:35.887012 -- Removed Exam: Trắc nghiệm kỳ 2 - 2016 -- {u'ok': 1, u'n': 1}
+127.0.0.1 -- 2016-05-11 16:56:32.042576 -- Created Exam: Trắc nghiệm kỳ 2 - 2016
+127.0.0.1 -- 2016-05-11 17:23:24.819354 -- Edited News: Thi trắc nghiệm tại EPAY --> Thi trắc nghiệm tại 
+127.0.0.1 -- 2016-05-11 21:44:26.899004 -- Removed Exam: Trắc nghiệm kỳ 2 - 2016 -- {u'ok': 1, u'n': 1}
+127.0.0.1 -- 2016-05-11 21:45:00.598595 -- Created Exam: Trắc nghiệm kỳ 2 - 2016

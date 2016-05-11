@@ -1,0 +1,68 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'create' %}
+    <form method="POST" enctype=multipart/form-data class="pure-form pure-form-aligned">
+        <table class="pure-table pure-table-bordered">
+            <tr>
+                <td><b>Tiêu đề</b></td>
+                <td> 
+                    <input id="name" type="text" name="name" required autofocus>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Ảnh minh họa</b></td>
+                <td>
+                    <input type=file name=image class="pure-button button-etick" required>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Tóm tắt</b></td>
+                <td> 
+                    <textarea type="text" name="summary" rows='5' cols='40' required></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Nội dung</b></td>
+                <td width="900px"> 
+                    <textarea type="text" name="content" class="ckeditor"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" name="create" value="Create" class="pure-button button-etick">
+                    <input type="reset" value="Reset" class="pure-button button-warning">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script src="/static/js/ckeditor/ckeditor.js"></script>
+{% elif request.args.get('c', '') == 'upload' %}
+    {{ test }}
+    <form method=POST enctype=multipart/form-data class="pure-form pure-form-aligned">
+        <input type=file name=image class="pure-button button-etick" required>
+        <input type=submit name=upload value="Tải lên" class="pure-button button-success">
+    </form>
+    </br>
+    {% if files %}
+        {% for file in files %}
+        <div style="float: left; margin: 0px 20px 40px 0px;">
+            <a href="{{ request.path }}?c=upload&delete={{ file['filename'] }}">
+                <img border="1" src="/static/pic/delete-icon.png" width="20" height="20" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+            </a>
+            <a href="/static/uploads/{{ file['filename'] }}">
+                <div class="imgfill" style="background-image: url('/static/uploads/{{ file['filename'] }}');"></div>
+            </a>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

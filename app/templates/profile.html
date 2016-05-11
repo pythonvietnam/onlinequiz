@@ -1,0 +1,125 @@
+{% extends "template.html" %}
+{% block content %}
+<script>
+function changepass() {
+    $("#changepass").show()
+}
+</script>
+
+<div class="main" style="width: 488px;float: left;">
+    <div class="menu">
+        <div class="menu-text">
+            <img src="/static/pic/user-icon2.png">
+            THÔNG TIN CÁ NHÂN
+        </div>
+    </div>
+    
+    <div class="content_profile">
+        <!-- Error from other pages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p style="text-align: center; color: orange;">{{ message }}</p></br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    
+        <!-- Error in this page -->
+        {% if notify != None %}
+            {% if notify == "Cập nhật thành công!" %}
+                <p style="text-align: center; color: green;">{{ notify }}</p></br>
+            {% else %}
+                <p style="text-align: center; color: red;">{{ notify }}</p></br>
+            {% endif %}
+        {% endif %}
+        
+        <p style="text-align: center;"><b>Chú ý:</b> Các mục (*) là bắt buộc.</p></br>
+        <form method="POST" class="pure-form pure-form-aligned">
+            <fieldset>
+                <div class="pure-control-group">
+                    <label>Tài khoản (*)</label>
+                    <input type="text" name="username" value="{{ user['username'] }}" disabled>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label>Họ và tên (*)</label>
+                    <input type="text" name="fullname" value="{{ user['fullname'] }}" required>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label>Email (*)</label>
+                    <input type="email" name="email" value="{{ user['email'] }}" placeholder="vidu@donvi.com" required>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label>Đơn vị công tác (*)</label>
+                    <input type="text" name="work" value="{{ user['work'] }}" required>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label>Chức vụ (*)</label>
+                    <input type="text" name="regency" value="{{ user['regency'] }}" required>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label>Mật khẩu hiện tại (*)</label>
+                    <input type="password" name="password" placeholder="Bắt buộc" pattern="[^]{6,}" required>	
+                </div>
+                
+                <div class="pure-control-group">
+                    <label></label>
+                    <input type=button value="Đổi mật khẩu" class="pure-button button-success" onclick="changepass();">
+                </div>
+                
+                <div id=changepass hidden>
+                    <div class="pure-control-group">
+                        <label>Mật khẩu mới</label>
+                        <input type="password" name="new_password" placeholder="Ít nhất 6 kí tự" pattern="[^]{6,}">	
+                    </div>
+                    <div class="pure-control-group">
+                        <label>Nhập lại</label>
+                        <input type="password" name="confirm_password" placeholder="Confirm password">	
+                    </div>
+                </div>
+                
+                <div class="pure-control-group">
+                    <label></label>
+                    <input type="submit" value="Cập nhật" class="pure-button button-etick">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+ </div>
+ 
+<div class="main" style="width: 488px;float: right;border-bottom: 0px">
+    <div class="menu">
+        <div class="menu-text">
+            <img src="/static/pic/exam.png">
+            THÀNH TÍCH
+        </div>
+    </div>
+    
+    {% for assignment in assignments %}
+        <div style="width: 410px;height: 20px;border-bottom: 1px solid #D7D7D7; padding: 20px;">
+            <div style="float: left; width: 300px;">
+                {% if exam_link_to_mode(assignment['exam_link']) == 'Thi thử' %}
+                    <img src="/static/pic/training.png" width=20 height=20 style="vertical-align: -25%">
+                {% else %}
+                    <img src="/static/pic/logo.png" width=20 height=20 style="vertical-align: -25%">
+                {% endif %}
+                <b>
+                    <a href="/du-thi/{{ assignment['exam_link'] }}" style="color: #1e47b0; font-size: 14px;">
+                        <u>{{ exam_link_to_name(assignment['exam_link']) }}</u>
+                    </a>
+                </b>
+            </div>
+            
+            <div style="float: right; text-align: center">
+                <b style="color: #008000; font-size: 14px;">{{ assignment['point'] }}/100</b>
+                <br>
+                ({{ seconds_to_time(assignment['completed_time']) }})
+            </div>
+        </div>
+    {% endfor %}
+ </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "template.html" %}
+{% block content %}
+
+<script type="text/javascript">
+function active(name) {
+
+$(".menu-button li").removeClass("active");
+$("."+name).addClass("active");
+$(".content").hide();
+$("#"+name).show();
+
+};
+</script>
+
+{% if have_official %}
+    {% set active_a = "active" %}
+    {% set active_b = "" %}
+    {% set status_a = "" %}
+    {% set status_b = "hidden" %}
+{% else %}
+    {% set active_a = "" %}
+    {% set active_b = "active" %}
+    {% set status_a = "hidden" %}
+    {% set status_b = "" %}
+{% endif %}
+
+<div class="main">
+    <div class="menu">
+        <div class="menu-text">
+            <img src="/static/pic/exam.png">
+            DANH SÁCH KÌ THI
+        </div>
+        
+        <div class="menu-button">
+            <li class="thithu {{ active_b }}">
+                <a href="#tab" onClick="active('thithu');">THI THỬ</a>
+            </li>
+            
+            <li class="chinhthuc {{ active_a }}">
+                <a href="#tab" onClick="active('chinhthuc');">CHÍNH THỨC</a>
+            </li>
+        </div>
+    </div>
+
+    {% for (id, name, status) in [('chinhthuc', 'Chính thức', status_a),('thithu', 'Thi thử', status_b)] %}
+        <div class="content" id="{{ id }}" {{ status }}>
+            {% if exams %}
+                {% for exam in exams if exam['mode'] == name %}
+                    <div class="slide" {% if assignment_in_exam(session['username'], exam['link']) == 'testing' %}
+                                            style="background-image:url('/static/pic/loading.gif');
+                                                   background-size: 20px 20px;
+                                                   background-repeat: no-repeat;
+                                                   background-position: 95% 18%;"
+                                       {% elif assignment_in_exam(session['username'], exam['link']) == 'completed' %}
+                                            style="background-image:url('/static/pic/completed.png');
+                                                   background-size: 20px 20px;
+                                                   background-repeat: no-repeat;
+                                                   background-position: 95% 18%;"
+                                       {% endif %}
+                    >
+                        <li>
+                            <a href="/du-thi/{{ exam['link'] }}">
+                                <div style="height: 70px; padding: 20px;">
+                                    <h3><img src="/static/pic/{% if exam['mode'] == 'Chính thức' %}logo.png
+                                                              {% elif exam['mode'] == 'Thi thử' %}training.png
+                                                              {% endif %}" 
+                                             width=20 height=20 style="vertical-align: middle;"> {{ exam['name']|upper }}</h3>
+                                    <br />
+                                    {{ (exam['content']|string)[:110] }}{% if (exam['content']|string)|length > 110 %} ... {% endif %}
+                                </div>
+                                
+                                <div style="font-size: 11px; text-align: center;">
+                                    <i>Ngày bắt đầu thi: {{ (exam['start_date'].replace(tzinfo=None)|string)[:10] }}</i>
+                                    |
+                                    <i>Nộp bài trước ngày: {{ (exam['deadline'].replace(tzinfo=None)|string)[:10] }}</i>
+                                </div>
+                                
+                                {% if exam['deadline'].replace(tzinfo=None) < now %}
+                                    <div style="height: 25px; background-color: #D7D7D7; color: white; text-align: right; margin-top: 5px; padding-top: 10px;">
+                                        <span style="margin-right: 20px; font-family: arial;">ĐÃ KẾT THÚC</span>
+                                    </div>
+                                {% elif exam['start_date'].replace(tzinfo=None) <= now %}
+                                    <div style="height: 25px; background-color: #1e47b0; color: white; text-align: right; margin-top: 5px; padding-top: 10px;">
+                                        <span style="margin-right: 20px; font-family: arial;">ĐANG DIỄN RA</span>
+                                    </div>
+                                {% else %}
+                                    <div style="height: 25px; background-color: #10bb67; color: white; text-align: right; margin-top: 5px; padding-top: 10px;">
+                                        <span style="margin-right: 20px; font-family: arial;">SẮP DIỄN RA</span>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </li>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div>
+                    Hiện tại không có kì thi nào!
+                </div>
+            {% endif %}
+                
+            <div class="nothing">
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

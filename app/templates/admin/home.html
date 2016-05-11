@@ -1,0 +1,98 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'report' %}
+    {{ show|safe }}
+    <table class="pure-table pure-table-bordered">
+        <tr>
+            <td><h3>Tống số thí sinh</h3></td>
+            <td>{{ countuser }}</td>
+        </tr>
+    
+        <tr>
+            <td><h3>Tống số kì thi</h3></td>
+            <td>{{ countexam }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Tống số gói câu hỏi</h3></td>
+            <td>{{ countquespackage }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Tống số câu hỏi</h3></td>
+            <td>{{ countquestion }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Tống số bài thi</h3></td>
+            <td>{{ countassignment }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Tống số tin tức</h3></td>
+            <td>{{ countnews }}</td>
+        </tr>
+        
+        <tr>
+            <td><h3>Tống số hướng dẫn</h3></td>
+            <td>{{ countguide }}</td>
+        </tr>
+    </table>
+{% elif request.args.get('c', '') == 'system' %}
+    <form method="POST" class="pure-form pure-form-aligned">
+        <div class="pure-control-group">
+            <label>Công bố đáp án</label>
+            <select name="result_on">
+                <option value="Có" {% if result_on == "Có" %}selected{% endif %}>Có</option>
+                <option value="Không" {% if result_on == "Không" %}selected{% endif %}>Không</option>
+            </select>
+        </div>
+        <div class="pure-control-group">
+            <label></label>
+            <input type="submit" value="Change" class="pure-button button-etick" autofocus>
+        </div>
+    </form>
+{% elif request.args.get('c', '') == 'rank' %}
+    <form method="POST" class="pure-form pure-form-aligned">
+        <div class="pure-control-group">
+            <label>Chọn kì thi</label>
+            <select name="exam" required>
+                    {% for exam in exams %}
+                        <option value="{{ exam['link'] }}"{% if exam_link == exam['link'] %}selected{% endif %}>{{ exam['name'] }}</option>
+                    {% endfor %}
+                </select>
+            <input type="submit" value="Xem" class="pure-button button-etick" autofocus>
+        </div>
+    </form>
+    
+    {% if assignments %}
+    <br>
+    <table class="pure-table pure-table-bordered">
+        <tr>
+            <td><b>TT</b></td>
+			<td><b>Tài khoản</td>
+            <td><b>Họ tên</b></td>
+            <td><b>Điểm</b></td>
+            <td><b>Thời gian</b></td>
+        </tr>
+        {% for assignment in assignments %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ assignment['username'] }}</td>
+				<td>{{ id_to_fullname(assignment['username']) }}</td>
+                <td>{{ assignment['point'] }}</td>
+                <td>{{ assignment['completed_time'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

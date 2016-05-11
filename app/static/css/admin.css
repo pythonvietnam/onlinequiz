@@ -1,0 +1,200 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    color: #333333;
+    font-size: 13px;
+    font-family: tahoma;
+    background-color: #EFEFEF;
+}
+
+.container {
+    
+}
+
+h1 {
+    color: #1e47b0;
+    font-size: 15px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+h3 {
+    color: #1e47b0;
+    font-size: 13px;
+}
+
+a {
+    color: #333333;
+	text-decoration: none;
+}
+
+a:hover {
+    color: #6255cc;
+}
+
+li {
+    list-style: None;
+}
+
+.nothing {
+	clear:both;
+}
+
+/*-------------------- CPANEL --------------------*/
+
+.wrapper {
+    background-color: #37b2c9;
+    width: 1366px;
+}
+
+/*---------- CP NAVIGATOR - LEFT ----------*/
+
+.cpnavigator {
+    padding-top: 30px;
+    float: left;
+    width: 209px;
+    text-align: right;
+    font-family: arial;
+    font-size: 14px;
+}
+
+.cpnavigator li {
+    padding: 7px 25px; 
+}
+
+.cpnavigator a {
+    text-decoration: none;
+}
+
+.cpnavigator a :hover {
+    background-color: #fafafa;
+}
+
+/*---------- CP RIGHT ----------*/
+
+.cpright {
+    background-color: white;
+    float: right;
+    width: 1157px;
+    min-height: 643px;
+}
+
+/*+++++ CP MENU +++++*/
+
+.cpmenu {
+    background-color: #fafafa;
+    height: 33px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.cpmenu  ul {
+    list-style-type:none;
+}
+.cpmenu  li {
+    display:inline;
+    float: left;
+}
+
+.cpmenu  a {
+    text-decoration: none;
+    display: block;
+    width: 170px;
+    height: 20px;
+    padding: 7px;
+    text-align: center;
+}
+
+.cpmenu  a:hover {
+    background-color: #e6e6e6;
+}
+
+.cpactive {
+    background-color: #e6e6e6;
+}
+
+/*+++++ CP CONTENT +++++*/
+
+.cpcontent {
+    border-left: 1px solid #e6e6e6;
+    padding: 30px 40px;
+    min-height: 549px;
+}
+
+/*-------------------- OTHERS --------------------*/
+
+.padding20 {
+    padding: 20px;
+}
+
+
+/*-------------------- QUESTIONS --------------------*/
+
+.question {
+    border: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+    padding: 20px 20px 0px 20px;
+}
+
+/*+++++ LOGIN +++++*/
+.login {
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    width: 360px;
+    height: 170px;
+    margin: auto;
+    padding: 20px 10px 10px 10px;
+    background-color: white;
+}
+
+.login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+/*+++++ BUTTON +++++*/
+
+.button-etick,
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+	color: white;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	font-family: arial;
+	font-size: 13px;
+}
+
+.button-success {
+	background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+	background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+	background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+	background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.button-etick {
+	background: rgb(55, 178, 201); /* this is my color */
+}
+
+.imgfill {
+    border: 1px solid #c0c0c0;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0% 0%;
+}​

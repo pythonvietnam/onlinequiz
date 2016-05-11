@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Trang quản trị | Đoàn Khối Doanh nghiệp Trung ương</title>
+        <link rel="icon" href="/static/pic/logo.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}">
+        <link rel='stylesheet' href='/static/css/admin.css'>
+        <script src="/static/js/jquery-1.7.1.min.js"></script>
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="wrapper">
+                <div class="cpnavigator">
+                    <div style="margin-bottom: 20px; padding-right: 25px;text-align: center;line-height: 20px;">
+                        <img src="/static/pic/logo.png" width=30 height=30 style="vertical-align: -45%;">
+                        <a href="/" target="_blank" style="text-decoration: underline; font-weight: bold;">TRANG CHỦ</a>
+                        </br>
+                        </br>
+                        <b>{{ session['manager'] }}</b>
+                        </br>
+                        ({{ session['level'] }})
+                    </div>
+
+                    <ul>
+                        {% if 'manager' in session %}
+                            {% for page in pages %}
+                                <a href="/admin/{{ page.link }}?c={{ page.catalogues[0][0] }}"><li {% if '/admin/' + page.link in request.path %}class="cpactive"{% endif %}>{{ page.name }}</li></a>
+                            {% endfor %}
+                        {% endif %}
+                        <a href="/mlogout"><li>Thoát</li></a>
+                    </ul>
+                </div>
+                
+                <div class="cpright">
+                    <div class="cpmenu">
+                        <ul>
+                            {% for cata in page.catalogues %}
+                                <li><a href="./{{ page.link }}?c={{ cata[0] }}" {% if cata[0] == request.args.get('c', '') %}class="cpactive"{% endif %}>{{ cata[1] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                
+                <div class="nothing">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

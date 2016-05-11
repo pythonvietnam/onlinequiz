@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>{% if '/du-thi' in request.path %}
+                    Thi trắc nghiệm
+               {% elif '/dang-nhap' in request.path %}
+                    Đăng nhập
+               {% elif '/ca-nhan' in request.path %}
+                    Thông tin cá nhân
+				{% else %}
+                    Thi trắc nghiệm
+               {% endif %}
+                | EPAY
+        </title>
+        <link rel="icon" href="/static/pic/logo.png">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:800&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+        <script src="/static/js/jquery-1.7.1.min.js"></script>
+	</head>
+	
+    <body> 
+		<div class="container">
+            <div id="bg">
+            </div>
+            
+			<div class="top">
+				<div class="menubar">
+                    <a href="/">
+                        <img class="logo" src="/static/pic/logo.png">
+                        <div class="slogan">
+                            <b>SAMRT EXAM</b>
+                            <br />
+                            <b>Using Python</b>
+                        </div>
+                    </a>
+                    
+                    <div class="nav">
+                        <a href="/">
+                            <li {% if request.path == "/" %}style="background-color: #444444;"{% endif %}>
+                                <img src='/static/pic/news2.png'>
+                                <br>
+                                TIN TỨC
+                            </li>
+                        </a>
+                        <a href="/du-thi">
+                            <li {% if "/du-thi" in request.path %}style="background-color: #444444;"{% endif %}>
+                                <img src='/static/pic/exam2.png'>
+                                <br>
+                                DỰ THI
+                            </li>
+                        </a>
+                        {% if 'username' not in session %}
+                            <a href="/dang-nhap">
+                                <li {% if request.path == "/dang-nhap" %}style="background-color: #444444;"{% endif %}>
+                                    <img src='/static/pic/login2.png'>
+                                    <br>
+                                    ĐĂNG NHẬP
+                                </li>
+                            </a>
+                        {% endif %}
+                    </div>
+                    
+                    {% if 'fullname' in session %}
+                        <div class="logged_in">
+                            <b>
+                                {% if 'fullname' in session and session['fullname']!='' %}
+                                    <a href="/ca-nhan">{{ session['fullname'] }}</a>
+                                {% elif 'fullname' in session and session['fullname']=='' %}
+                                    <a href="/ca-nhan">{{ session['username'] }}</a>
+                                {% endif %}
+                            </b>
+                            &nbsp;<img src='/static/pic/user-icon.png' width=20 height=20 style="vertical-align: -10%;">&nbsp;
+                            <a href="/dang-xuat">Đăng xuất</a>
+                        </div>
+                    {% endif %}
+				</div>
+			</div>
+            
+            <div id="linkbar">
+                <a href="/">TRANG CHỦ</a> > {% if request.path == "/" %}
+                                                <a href="/tin-tuc">TIN TỨC</a>
+                                                {% if '?id' in request.url %}
+                                                    > {{ news['name']|upper }}
+                                                {% endif %}
+                                            {% elif "/du-thi" in request.path %}
+                                                <a href="/du-thi">DỰ THI</a>
+                                                {% if 'du-thi/' in request.path %}
+                                                    > <a href="{{ request.path }}">{{ exam['name']|upper }}</a>
+                                                {% endif %}
+                                            {% elif request.path == "/ca-nhan" %}
+                                                CÁ NHÂN
+                                            {% endif %}
+            </div>
+            
+            
+			<div id="banner">
+			</div>
+			
+            
+			<div id="middle">
+                {% block content %}
+                {% endblock %}
+                <div class="nothing">
+                </div>
+			</div>
+			
+            
+			<div id="bottom">
+				<div id="footer">
+					<div id="footer_left">
+						<img src="/static/pic/icon-facebook.png" width=18 height=18 style="vertical-align:middle">
+                        <img src="/static/pic/icon-google.png" width=18 height=18 style="vertical-align:middle">
+                        <span style="vertical-align:middle">
+                            HIỂN THỊ TỐT NHẤT TRÊN TRÌNH DUYỆT <a href="https://www.google.com/intl/vi/chrome/browser/" target="_blank">CHROME</a> VÀ <a href="http://www.mozilla.org/vi/firefox/new/" target="_blank">FIREFOX</a>
+                        </span>
+					</div>
+					
+					<div id="footer_right">
+						<span style="vertical-align:middle">© 2016G</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

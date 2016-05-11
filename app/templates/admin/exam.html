@@ -1,0 +1,88 @@
+{% extends "admin/template.html" %}
+{% block content %}
+<div class="cpcontent">
+{% if notify %}
+    <p style="color: orange;">{{ notify }}</p></br></br>
+{% endif %}
+
+{% if request.args.get('c', '') == 'create' %}
+    Vui lòng điền đầy đủ tất cả các mục.
+    </br>
+    Số câu hỏi trong Gói câu hỏi phải nhiều hơn Số câu hỏi của Kì thi.
+    </br>
+    Ngày thi nhỏ nhất là ngày hiện tại. Thời hạn nộp bài phải lớn hơn Ngày bắt đầu thi.
+    </br></br>
+    <form method="POST"  class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="password">Tiêu đề</label>
+                <input type="text" name="name" size="60" required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Nội dung</label>
+                <textarea type="text" name="content" rows=6 cols=50 required></textarea>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Gói câu hỏi</label>
+                <select name="quespackage" required>
+                        <option></option>
+                        {% for quespackage in quespackages %}
+                            <option value="{{ quespackage['code'] }}">{{ quespackage['name'] }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Số câu hỏi</label>
+                <input type="number" name="question_number" min=1 required>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="name">Thời gian làm bài (phút)</label>
+                <input type="number" name="duration" min=1 required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Ngày bắt đầu</label>
+                <input type="date" name="start_date" value={{ now }} required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Thời hạn nộp bài (trước ngày)</label>
+                <input type="date" name="deadline" required>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Chế độ</label>
+                <select name="mode" required>
+                    <option></option>
+                    <option value="Thi thử">Thi thử</option>
+                    <option value="Chính thức">Chính thức</option>
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label for="name">Trạng thái</label>
+                <select name="status" required>
+                    <option value="Hiện">Hiện</option>
+                    <option value="Ẩn">Ẩn</option>
+                </select>
+            </div>
+            
+            <div class="pure-control-group">
+                <label></label>
+                <input type="submit" name="create" value="Create" class="pure-button button-etick" autofocus>
+                <input type="reset" value="Reset" class="pure-button button-warning">
+            </div>
+        </fieldset>
+    </form>
+{% elif request.args.get('c', '') == 'view' and request.args.get('edit', '') == '' %}
+    <b>Chú ý:</b> Xóa kì thi sẽ xóa tất cả bài làm trong kì thi đó. Nếu muốn bỏ kì thi và vẫn giữ bài làm hãy chuyển sang chế độ Ẩn.</br></br>
+    {{ show|safe }}
+{% else %}
+    {{ show|safe }}
+{% endif %}
+</div>
+{% endblock %}

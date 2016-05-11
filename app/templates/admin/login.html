@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Trang quản trị</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+        <link rel='stylesheet' href='/static/css/admin.css'>
+    </head>
+    
+    <body>
+        <div style="margin-top: 50px;">
+            {% if error %}
+                <p style="text-align: center; color: orange; margin-top: 50px;">{{ error }}</p></br>
+            {% endif %}
+            
+            <div class="login">
+                <h2>
+                    <a href="/">
+                        ĐOÀN KHỐI DNTW
+                    </a>
+                </h2>
+
+                <form action='/mlogin' method="POST" class="pure-form pure-form-aligned">
+                    <fieldset>                        
+                        <div class="pure-control-group">
+                            <label>Tài khoản</label>
+                            <input type="text" name="username" placeholder="Username" required autofocus>
+                        </div>
+                        
+                        <div class="pure-control-group">
+                            <label>Mật khẩu</label>
+                            <input type="password" name="password" placeholder="Password" required>	
+                        </div>
+                        
+                        <div class="pure-control-group">
+                            <label></label>
+                            <input type="submit" value="Đăng nhập" class="pure-button button-etick">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

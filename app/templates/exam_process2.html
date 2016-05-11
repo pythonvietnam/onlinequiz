@@ -1,0 +1,117 @@
+{% extends "template.html" %}
+{% block content %}
+<script>
+$(function() {
+    var time_remain = document.getElementById("time_remain").innerHTML
+        ticked = document.getElementById("ticked").innerHTML,
+        total = document.getElementById("total").innerHTML;
+
+    (function tick() {
+        time_remain -= 1;
+
+        if (time_remain == 0) {
+            $('.print_here').html("Đã hết thời gian!");
+            $('.tinhtoan').html("Đang chuyển hướng...")
+            $('.nopbai_button').hide();
+            $('input').prop('disabled', true);
+            setTimeout("location.reload();", 5000);
+        }
+
+        else {
+            $('.print_here').html('<b>THỜI GIAN LÀM BÀI CÒN:</b> <b style="color: #1e47b0;">' + 
+                                  Math.floor(time_remain / 60) + ' phút ' + 
+                                  Math.floor(time_remain % 60) + ' giây</b>');
+            if ((total - ticked) != 0) {
+                $('.tinhtoan').html('Trung bình bạn còn khoảng: <span style="color: #008000">' + 
+                                    Math.ceil(time_remain/(total - ticked)) + 
+                                    ' giây / 1 câu hỏi</span>');
+            }
+            else {
+                $('.tinhtoan').html('Hãy kiểm tra lại bài làm trước khi hết giờ');
+            }
+            setTimeout(tick, 1000);
+        }
+        
+    })();
+});
+
+
+$(function () {
+    $("input").change(function() {
+        var item = this;
+        if (
+        (function (){
+                for (i=1;i<=item.id[6];i++) {
+                    if ($('#' + item.id.slice(0, 11) + i).attr('checked')) {
+                        return true;
+                    }
+                }
+            })()
+        ) {
+            $('#cau' + this.id.slice(8, 10)).css({'border-left': '4px solid #1e47b0', 'border-radius': '2px', 'margin-left': '0px'});
+        }
+        
+        else  {
+            $('#cau' + this.id.slice(9, 11)).css({'border-left': '1px solid #d7d7d7', 'border-radius': '0px', 'margin-left': '3px'});
+        }
+    });
+});
+</script>
+
+<span id="time_remain" HIDDEN>{{ duration }}</span>
+
+<div class="main">
+    <div class="menu">
+        <div class="menu-text">
+            <img src="/static/pic/exam-icon.png">
+            PHÒNG THI - {{ exam['name']|upper }} - {{ session['fullname']|upper }}
+        </div>
+    </div>
+
+    <div style="padding: 20px 20px 0px 20px; margin-bottom: 114px;">
+        <form method=POST>
+            {% for question in asm_of_user %}
+                {% set q = '%02d'|format(loop.index|int) %}
+                {% set l = question[1]|length %}
+                <div class="question" id="cau{{ q }}" {% if check_ticked(question[1]) %}style="border-left: 4px solid #1e47b0; border-radius: 2px; margin-left: 0px;"{% endif %}>
+                    <b style="font-size: 14px; color: #1e47b0">CÂU {{ loop.index }}. {{ question[0]|upper }}</b>
+                    <div style="padding: 20px 20px 0px 20px; font-size: 14px;">
+                        {% for answer_content in question[1] %}
+                            <input type="{{ question[2] }}" 
+                                   name="{{ question[0] }}" 
+                                   value="{{ answer_content[0] }}" 
+                                   {% if answer_content[1] %}
+                                        checked
+                                   {% endif %}
+                                   id="group_{{ l }}_{{ q }}_{{ loop.index }}" 
+                            ><label for="group_{{ l }}_{{ q }}_{{ loop.index }}">&nbsp;{{ answer_content[0] }}</label>
+                            </br>
+                            </br>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        
+            <div class="nopbai">
+                <div class="nopbai_text">
+                    <img src="/static/pic/time.png" width=28 height=28 style="vertical-align: -40%;"> 
+                    <span class="print_here"></span>
+                    </br>
+                    </br>
+                    <img src="/static/pic/guide.png" width=15 height=15 style="vertical-align: -20%; padding-left: 20px;"> 
+                    <span class="tinhtoan"></span>
+                    </br>
+                    </br>
+                    <img src="/static/pic/completed.png" width=15 height=15 style="vertical-align: -20%; padding-left: 20px;"> 
+                    Hoàn thành: <span style="color: #008000"><span id="ticked">{{ ticked }}</span>/<span id="total">{{ exam['question_number'] }}</span></span> - 
+                    Trong thời gian: <span style="color: #008000">{{ completed_time }}</span>
+                    </br>
+                </div>
+                <div class="nopbai_button">
+                    <input type=submit name=doexam value={% if not submitted %}'Nộp bài'{% else %}'Cập nhật'{% endif %} class='pure-button button-etick' onClick="alert('Nộp bài thành công!');">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
